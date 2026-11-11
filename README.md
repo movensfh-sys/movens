@@ -74,4 +74,4 @@ Virtual Console 페이지를 새로 열면 차량 상태가 기본값(창문 100
 | 실내 마이크 | Android `AudioRecord` | `android.permission.RECORD_AUDIO` |
 
 ## 라이선스
-공모전 약관 확인 후 결정합니다. 그전까지는 All rights reserved입니다.
+[MIT](LICENSE)
