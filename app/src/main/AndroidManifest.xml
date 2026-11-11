@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-feature android:name="android.hardware.type.automotive" android:required="true" />
+
+    <!-- Pleos Vehicle SDK: Brake, DrivingMode, Odometer -->
+    <uses-permission android:name="pleos.car.permission.CAR_DRIVE" />
+    <!-- Window, Wiper (sound false-positive suppression) -->
+    <uses-permission android:name="pleos.car.permission.CAR_WINDOWS" />
+    <!-- HVAC fan (sound false-positive suppression) -->
+    <uses-permission android:name="pleos.car.permission.CAR_CLIMATE" />
+    <!-- Safety (telltales), Tire. registerTelltales additionally demands PRIVATE_CAR_SAFETY. -->
+    <uses-permission android:name="pleos.car.permission.CAR_SAFETY" />
+    <uses-permission android:name="pleos.car.permission.PRIVATE_CAR_SAFETY" />
+    <!-- Pleos TextToSpeech SDK -->
+    <uses-permission android:name="pleos.car.permission.TTS_SERVICE" />
+
+    <!-- Standard AAOS Car API: vehicle speed, gear -->
+    <uses-permission android:name="android.car.permission.CAR_SPEED" />
+    <uses-permission android:name="android.car.permission.CAR_POWERTRAIN" />
+
+    <!-- Cabin microphone for abnormal-sound recording -->
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <application
+        android:label="@string/app_name"
+        android:theme="@android:style/Theme.DeviceDefault.NoActionBar">
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+</manifest>

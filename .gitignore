@@ -1,0 +1,17 @@
+# Gradle / Android Studio
+.gradle/
+build/
+.idea/
+*.iml
+.kotlin/
+captures/
+.cxx/
+.externalNativeBuild/
+.DS_Store
+
+# Local machine config and secrets — never commit
+local.properties
+*.jks
+*.keystore
+keystore.properties
+.env
