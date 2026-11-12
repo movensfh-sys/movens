@@ -24,9 +24,9 @@ MainActivity.kt 가 신호를 받아 위 세 부품에 연결한다.
 판단 로직은 순수 Kotlin이라 단위 테스트로 검증한다: `app/src/test/` (PedalRuleTest, AnomalyDetectorTest). `./gradlew test`
 
 ## 테스트 환경
-- Android Studio, Android SDK API 34, JDK 17
+- Android Studio **Meerkat(2024.3.2) 이상**, Android SDK API 34, JDK 17 이상(Studio 내장 JDK로 충분)
 - Pleos Connect Emulator v2.1.0 (API 34) + Pleos Connect Virtual Console
-- Gradle 9.6 (wrapper 포함), Android Gradle Plugin 9.5.1, minSdk 28
+- Gradle 8.14.3 (wrapper 포함), Android Gradle Plugin 8.10.1, Kotlin 2.2.21, minSdk 28
 - Pleos SDK: `ai.pleos.playground:Vehicle:2.3.2`, `ai.pleos.playground:TextToSpeech:3.3.1`
 
 ## 실행 방법
@@ -40,6 +40,13 @@ MainActivity.kt 가 신호를 받아 위 세 부품에 연결한다.
 5. 에뮬레이터 ⋮ → Microphone → "Virtual microphone uses host audio input"을 켭니다 (이상 소리 기록용).
 
 명령줄: `./gradlew :app:assembleDebug` → `app/build/outputs/apk/debug/app-debug.apk`
+(명령줄 빌드는 `ANDROID_HOME` 환경변수나 `local.properties`의 `sdk.dir`이 필요하다. Android Studio로 열면 자동으로 만들어진다.)
+
+**"열리지 않는다 / 실행이 안 된다"면**
+- Android Studio가 Meerkat(2024.3.2)보다 오래됐다 → Studio 업데이트. (Help → Check for Updates)
+- Gradle Sync 중 "AGP 업그레이드" 안내가 뜨면 **무시**한다. 올리면 팀원들과 버전이 어긋난다.
+- 실행 대상이 Pleos Connect 에뮬레이터가 아니다 → 일반 폰 에뮬레이터에는 설치되지 않는다(Automotive 전용).
+- 에뮬레이터가 "Starting up"에서 멈춘다 → `%USERPROFILE%\.android\advancedFeatures.ini`에 `BluetoothEmulation = off` 한 줄을 넣고 다시 켠다.
 설치: `adb install -r -g app-debug.apk` (`-g`: 속도·마이크 권한 자동 허용)
 
 ## 시연 순서 (Virtual Console)
