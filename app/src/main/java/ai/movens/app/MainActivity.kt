@@ -25,6 +25,7 @@ import android.car.Car
 import android.car.VehiclePropertyIds
 import android.car.hardware.CarPropertyValue
 import android.car.hardware.property.CarPropertyManager
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Bundle
@@ -84,7 +85,11 @@ class MainActivity : Activity() {
 
         val missing = arrayOf(Car.PERMISSION_SPEED, Manifest.permission.RECORD_AUDIO)
             .filter { checkSelfPermission(it) != PackageManager.PERMISSION_GRANTED }
-        if (missing.isEmpty()) startPermissionedInputs() else requestPermissions(missing.toTypedArray(), 1)
+        if (missing.isEmpty()) startPermissionedInputs() else {
+            requestPermissions(missing.toTypedArray(), 1)
+            // Pleos 홈은 권한 창이 뜨면 앱 패널을 숨긴다. 우리 태스크를 다시 앞으로 가져오면 권한 창이 보인다.
+            ui.postDelayed({ startActivity(Intent(this, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)) }, 1_500)
+        }
         ui.post(ticker)
         refreshCards()
     }

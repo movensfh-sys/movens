@@ -43,6 +43,7 @@ MainActivity.kt 가 신호를 받아 위 세 부품에 연결한다.
 (명령줄 빌드는 `ANDROID_HOME` 환경변수나 `local.properties`의 `sdk.dir`이 필요하다. Android Studio로 열면 자동으로 만들어진다.)
 
 **"열리지 않는다 / 실행이 안 된다"면**
+- Run 했는데 앱 화면이 안 뜨고 내비만 보인다 → 권한 창(위치·마이크)이 뒤에 숨은 것. 하단 바의 movens 아이콘을 한 번 더 누르면 권한 창이 보인다. 두 번 모두 **허용**. (저장소의 `app` 실행 구성은 `-g`로 설치해 이 창을 건너뛴다)
 - Android Studio가 Meerkat(2024.3.2)보다 오래됐다 → Studio 업데이트. (Help → Check for Updates)
 - Gradle Sync 중 "AGP 업그레이드" 안내가 뜨면 **무시**한다. 올리면 팀원들과 버전이 어긋난다.
 - 실행 대상이 Pleos Connect 에뮬레이터가 아니다 → 일반 폰 에뮬레이터에는 설치되지 않는다(Automotive 전용).
