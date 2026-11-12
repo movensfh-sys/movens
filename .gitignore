@@ -1,8 +1,7 @@
 # Gradle / Android Studio
 .gradle/
 build/
-.idea/*
-!.idea/runConfigurations/
+.idea/
 *.iml
 .kotlin/
 captures/
