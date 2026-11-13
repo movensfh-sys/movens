@@ -38,7 +38,8 @@ class Card(
 /** 카드는 차량 안(앱 내부 저장소)에만 쌓인다. 한 줄에 카드 하나(JSON Lines). */
 class CardStore(ctx: Context) {
     private val file = File(ctx.filesDir, "cards.jsonl")
-    val all: MutableList<Card> = if (file.exists()) file.readLines().filter { it.isNotBlank() }.map { Card.fromJson(JSONObject(it)) }.toMutableList() else mutableListOf()
+    // 강제 종료로 쓰다 만 줄이 남을 수 있다. 깨진 줄만 건너뛰고 나머지 카드는 살린다.
+    val all: MutableList<Card> = if (file.exists()) file.readLines().mapNotNull { runCatching { Card.fromJson(JSONObject(it)) }.getOrNull() }.toMutableList() else mutableListOf()
 
     fun add(kind: String, condition: String, detail: String, odometerKm: Int?, clipPath: String? = null): Card {
         val count = 1 + all.count { it.kind == kind && it.condition == condition }
