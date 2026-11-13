@@ -36,8 +36,12 @@ MainActivity.kt 가 신호를 받아 위 세 부품에 연결한다.
    - URL (Mac): `https://nexus-playground.pleos.ai/repository/raw-releases/connect-avd/2.x/crp-arm64-sys-img.xml`
 2. SDK Platforms → API 34 → **Pleos Connect system image**를 설치하고 Android Studio를 재시작합니다.
 3. Device Manager → Create device → Automotive → Pleos Connect v2.1.0 (Cold boot, RAM 4 GB).
-4. 이 저장소를 열고 에뮬레이터를 대상으로 Run 합니다. 처음 실행할 때 속도·마이크 권한을 허용합니다.
-5. 에뮬레이터 ⋮ → Microphone → "Virtual microphone uses host audio input"을 켭니다 (이상 소리 기록용).
+4. 이 저장소를 **한글이 없는 경로**(예: `C:\dev\movens`)에 두고 Android Studio → File → Open으로 엽니다.
+   - "Please Select Gradle JVM" 창이 뜨면 **Use JVM 21**을 누릅니다.
+5. Gradle Sync가 끝나면 실행 대상을 Pleos Connect 에뮬레이터로 고르고 ▶ Run 합니다. 처음 실행할 때 위치·마이크 권한 창에서 **허용**을 두 번 누릅니다.
+6. 에뮬레이터 ⋮ → Microphone → "Virtual microphone uses host audio input"을 켭니다 (이상 소리 기록용).
+
+**빌드 없이 앱만 설치**: [Releases](../../releases)(또는 zip의 `apk/`)의 APK 파일을 켜진 에뮬레이터 창에 끌어다 놓습니다.
 
 명령줄: `./gradlew :app:assembleDebug` → `app/build/outputs/apk/debug/app-debug.apk`
 (명령줄 빌드는 `ANDROID_HOME` 환경변수나 `local.properties`의 `sdk.dir`이 필요하다. Android Studio로 열면 자동으로 만들어진다.)
@@ -49,7 +53,10 @@ MainActivity.kt 가 신호를 받아 위 세 부품에 연결한다.
 - Gradle Sync 중 "AGP 업그레이드" 안내가 뜨면 **무시**한다. 올리면 팀원들과 버전이 어긋난다.
 - 실행 대상이 Pleos Connect 에뮬레이터가 아니다 → 일반 폰 에뮬레이터에는 설치되지 않는다(Automotive 전용).
 - 에뮬레이터가 "Starting up"에서 멈춘다 → `%USERPROFILE%\.android\advancedFeatures.ini`에 `BluetoothEmulation = off` 한 줄을 넣고 다시 켠다.
-설치: `adb install -r -g app-debug.apk` (`-g`: 속도·마이크 권한 자동 허용)
+- "Gradle 8.14.3 is incompatible with the Gradle JVM version 25" → **Use JVM 21** (또는 Settings → Build Tools → Gradle → Gradle JDK를 17~21로).
+- GitHub에서 404 → 저장소가 비공개라 `movensfh-sys` 계정으로 로그인해야 보인다. git은 Windows 자격 증명 관리자에서 `git:https://github.com` 항목을 지우고 다시 로그인.
+
+명령줄 설치: `adb install -r -g app-debug.apk` (`-g`: 권한 창 없이 자동 허용)
 
 ## 시연 순서 (Virtual Console)
 Virtual Console은 에뮬레이터 안의 8088 포트에서 뜬다: `adb forward tcp:18088 tcp:8088` 후 브라우저에서 `http://127.0.0.1:18088`.
