@@ -41,9 +41,15 @@ class CardStore(ctx: Context) {
     // 강제 종료로 쓰다 만 줄이 남을 수 있다. 깨진 줄만 건너뛰고 나머지 카드는 살린다.
     val all: MutableList<Card> = if (file.exists()) file.readLines().mapNotNull { runCatching { Card.fromJson(JSONObject(it)) }.getOrNull() }.toMutableList() else mutableListOf()
 
-    fun add(kind: String, condition: String, detail: String, odometerKm: Int?, clipPath: String? = null): Card {
-        val count = 1 + all.count { it.kind == kind && it.condition == condition }
-        val card = Card(System.currentTimeMillis(), kind, condition, detail, odometerKm, count, clipPath)
+    /**
+     * windowMs가 없으면 같은 종류·같은 조건의 누적 횟수를, 있으면 최근 windowMs 안의 같은 종류 횟수를 센다
+     * (주행 중에는 조건이 계속 바뀌므로 이상 소리는 "최근 10분 안의 반복"으로 센다).
+     */
+    fun add(kind: String, condition: String, detail: String, odometerKm: Int?, clipPath: String? = null, windowMs: Long? = null): Card {
+        val now = System.currentTimeMillis()
+        val count = 1 + if (windowMs == null) all.count { it.kind == kind && it.condition == condition }
+                        else all.count { it.kind == kind && it.time >= now - windowMs }
+        val card = Card(now, kind, condition, detail, odometerKm, count, clipPath)
         all.add(0, card)
         file.appendText(card.toJson().toString() + "\n")
         return card
