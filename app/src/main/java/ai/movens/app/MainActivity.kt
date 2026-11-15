@@ -950,8 +950,9 @@ class MainActivity : Activity() {
         return FrameLayout(this).apply {
             visibility = View.GONE; isClickable = true; elevation = dpf(30f)
             setBackgroundColor(0xF2C8141E.toInt())
-            addView(suaLive, FrameLayout.LayoutParams(WRAP, WRAP, Gravity.CENTER))
-            addView(suaResult, FrameLayout.LayoutParams(WRAP, WRAP, Gravity.CENTER))
+            // 폭을 WRAP으로 두면 세로 LinearLayout이 고정 폭 아이콘(96dp) 폭으로 줄어들어 글자가 잘린다 → 화면 폭을 쓴다
+            addView(suaLive, FrameLayout.LayoutParams(MATCH, WRAP, Gravity.CENTER))
+            addView(suaResult, FrameLayout.LayoutParams(MATCH, WRAP, Gravity.CENTER))
         }
     }
 
