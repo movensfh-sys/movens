@@ -1,19 +1,34 @@
 # movens
 
-> **차가 평소와 다른 소리를 내면 그 순간의 조건과 함께 녹음해 정비소에 전달하고, 저속 페달 오조작과 경고등은 음성 한 문장으로 바로 알려 주는 운전 안전 앱.**
-> 현대자동차그룹 차량용 앱 개발 공모전 출품작 (대학(원)생 부문) · Pleos Connect
+차량 이상 소리 기록 · 저속 페달 오조작 경고 · 경고등 음성 안내로 운전 중 불안을 줄여 주는 Pleos Connect 운전 안전 앱
 
-**시작은 정비소였다.** 차에서 이상한 소리가 나서 정비소에 가면, 막상 그 자리에서는 소리가 나지 않는다.
-운전자는 "언제, 어떤 조건에서 나는 소리인지" 말로 설명하기 어렵고, 소리가 점점 심해져도 스스로 알아차리기 어렵다. 불편의 핵심은 **소리가 났던 그 순간의 조건이 남아 있지 않다**는 점이다.
-그래서 소리가 난 순간을 **속도 · 브레이크 같은 차량 신호와 함께 녹음해 두고**, 정비소에서 카드 한 장으로 보여 주는 것부터 시작했다. 최종 목표는 소리만으로 의심 부위를 추정하는 음향 진단이다.
+현대자동차그룹 차량용 앱 개발 공모전 출품작 (대학(원)생 부문)
 
-여기에 사람이 흔히 실수하거나 어려워하는 두 순간을 더했다.
+| 제출 항목 | 위치 · 내용 |
+|---|---|
+| APK (release) | [`apk/movens_movens_release.apk`](apk/movens_movens_release.apk) |
+| 시연 영상 | https://youtu.be/JxV-zK6DK0A (2분 21초) |
+| 개발 · 시연 에뮬레이터 | Pleos Connect Emulator v2.1.0 (API 34) |
+| 화면 규격 | 2560 × 1440, 160 dpi (Pleos Connect v2.1.0 AVD 기본값) |
+| 실행 방법 · 필요한 설정 | [실행 방법](#실행-방법) · [테스트 환경 및 필요한 설정](#테스트-환경-및-필요한-설정) |
+
+## 기획 배경
+
+차에서 이상한 소리가 나서 정비소에 가도, 그 자리에서는 소리가 재현되지 않는 경우가 많다.
+운전자는 "언제, 어떤 조건에서" 났는지 말로 설명하기 어렵고, 소리가 점점 심해져도 알아차리기 어렵다. 문제는 **소리가 났던 순간의 조건이 어디에도 남지 않는다**는 점이다.
+movens는 소리가 난 순간을 **속도 · 브레이크 같은 차량 신호와 함께 녹음해 두고**, 정비소에서 카드 한 장으로 보여 주는 데서 출발한다. 최종 목표는 소리로 의심 부위를 추정하는 음향 진단이다.
+
+함께 다루는 두 가지:
 - **저속 페달 오조작** — 2025년 보도된 급발진 의심 사고 149건 중 109건(약 73%)이 페달 오조작으로 확인됐고, 69.4%가 정차 · 저속 중에 일어났다 ([한국교통안전공단 분석, 2026.1](https://magazine.hankyung.com/business/article/202601199742b)). 위험한 순간에 바로 알려 주는 경고가 필요하다.
 - **경고등** — 영국 운전자 2,000명 설문에서 46%가 계기판 경고등의 절반도 알아보지 못했다 ([Motoring Research](https://www.motoringresearch.com/car-news/car-dashboard-warning-lights/)). 설명서는 경고등 이름을 알아야 찾을 수 있어 운전 중에는 쓰기 어렵다.
 
-**▶ 시연 영상 (MVP, 2분 21초): https://youtu.be/JxV-zK6DK0A** — 이상 소리 기록(0:06) · 경고등 알림(1:04) · 정비 전달 카드(2:02). Pleos Connect Emulator에서 실제로 동작하는 화면을 녹화했다. 사전 개발 MVP라 화면 문구가 지금 버전과 조금 다를 수 있다.
+## 시연 영상
 
-**설계 원칙**
+https://youtu.be/JxV-zK6DK0A — 0:06 이상 소리 기록 · 1:04 경고등 알림 · 2:02 정비 전달 카드.
+사전 개발 MVP를 에뮬레이터에서 녹화한 영상이라 화면 문구가 현재 커밋과 다를 수 있다.
+
+## 설계 원칙
+
 - 주행 중에는 짧은 음성 한 문장만 쓴다. 화면 안내와 기록 확인은 Pleos 주행 규제에 따라 정차한 뒤에 한다.
 - 원인을 단정하지 않는다. 지금은 기록 · 알림 · 정비 전달까지 하고, 음향 진단은 정비 현장 데이터로 검증한 범위에서 단계적으로 더한다.
 - 차량 제어에는 개입하지 않는다. 경고와 음성 안내로 운전자가 직접 대응하도록 돕는다.
@@ -21,12 +36,11 @@
 - 소리와 주행 정보는 차량 안에서만 처리한다. 서버 전송이 없다.
 - 검증되지 않은 정확도나 효과는 내세우지 않는다. "급발진 감지", "충돌 방지"라는 표현은 쓰지 않는다.
 
-## 이렇게 써요
+## 실행 화면
 
-> 아래는 모두 **Pleos Connect Emulator 2.1.0에서 실제로 실행한 화면**이다 (목업 없음). 차량 상태는 Virtual Console로 바꿨다.
-> 왼쪽은 차량 클러스터, 오른쪽이 movens다.
+Pleos Connect Emulator v2.1.0(2560 × 1440)에서 캡처했다. 차량 상태는 Virtual Console로 바꿨고, 화면 왼쪽 영역은 시스템 클러스터다.
 
-### 1. 평소와 다른 소리가 나면, 한 번 더 듣고 기록해요
+### 1. 이상 소리 — 재확인 후 기록
 
 앱을 켜 두면 실내 마이크 소리로 평소 기준선을 배우고(시연값 20초, 계획은 누적 2시간), 1초마다 음량 · 음색 · 충격음을 기준선과 비교한다.
 벗어난 소리가 나도 바로 기록하지 않는다. **5초 동안 다시 들어 보고, 또 들려야** 10초 녹음과 정비 카드를 남긴다. 이때는 짧은 알림음만 낸다.
@@ -39,26 +53,26 @@
 
 창문이 열려 있거나 와이퍼가 작동하거나 송풍이 강하면 그동안은 판단하지 않는다(화면 아래 '창문 닫힘 · 와이퍼 정지 · 송풍 약함' 칩).
 
-### 2. 10분 안에 세 번이면, 점검을 권해요
+### 2. 10분 안 3회 반복 — 정비 점검 권고
 
 최근 10분 안에 세 번째로 확인되면 음성 한 문장으로 알린다: "엔진에서 평소와 다른 소리가 반복되었습니다. 정비 점검을 받으세요." 원인은 단정하지 않는다.
 
 ![3회 반복 → 정비 점검 권고](docs/img/readme/03-sound-repeat.jpg)
 
-### 3. 정비소에서는 카드로 보여 줘요
+### 3. 정비 전달 카드
 
 기록 탭의 정비 전달 카드에 **언제 · 주행거리 · 어떤 때(정차 중 / 정속 주행 …) · 내용 · n회째**가 한 줄로 남고, ▶ 다시 듣기로 그때의 10초 녹음을 들려줄 수 있다. 소리를 말로 설명할 필요가 없다. 카드는 앱 내부 저장소에만 있다.
 
 ![정비 전달 카드](docs/img/readme/05-records.jpg)
 
-### 4. 경고등이 켜지면, 쉬운 말로 읽어 줘요
+### 4. 경고등 안내
 
 경고등 22종을 쉬운 이름과 설명으로 읽어 준다. 색이 곧 위험도다 — **빨강(위험) 10분 · 노랑(주의) 5분 · 초록(안내) 2분** 동안 오른쪽 위 알림이 남는다. 여러 개가 한꺼번에 켜지면 가장 위험한 것을 기준으로 한 번에 묶어 안내한다.
 예: "타이어 공기압 경고입니다. 타이어 바람이 부족해요. 공기압을 확인하세요. 가까운 시일 안에 점검을 받으세요."
 
 ![경고등 안내](docs/img/readme/04-telltale.jpg)
 
-### 5. 저속에서 페달을 잘못 밟으면, 바로 말해요
+### 5. 저속 페달 오조작 경고 · 후진 주차 체험
 
 R 또는 D 기어, 15 km/h 이하에서 **브레이크 신호 없이 2초 안에 8 km/h 이상** 빨라지면 경고음과 함께 "브레이크를 밟으세요". 브레이크를 밟는데도 계속 빨라지면 "정차하세요"라고 말하고 신호 · 속도 · 기어 · 시각을 참고 기록으로 남긴다(공식 사고기록장치가 아니며 원인이나 과실을 판정하지 않는다). 크루즈 중에는 적용하지 않는다.
 주행 중(5 km/h 초과)에는 Pleos 주행 규제로 앱 화면이 가려지므로 이 경고는 **음성으로만** 나오고, 정차하면 기록 탭에 "페달 경고" 카드가 보인다.
@@ -69,13 +83,13 @@ R 또는 D 기어, 15 km/h 이하에서 **브레이크 신호 없이 2초 안에
 
 ## APK
 
-**[GitHub Releases (최신)](https://github.com/movensfh-sys/movens/releases/latest)** — 켜진 Pleos Connect 에뮬레이터 창에 APK를 끌어다 놓거나:
+**[`apk/movens_movens_release.apk`](apk/movens_movens_release.apk)** — release 빌드 (별도 출시 키가 없어 디버그 키로 서명). 켜진 Pleos Connect 에뮬레이터 창에 끌어다 놓거나:
 
 ```bash
-adb install -r -g movens-v0.2.2-debug.apk
+adb install -r -g apk/movens_movens_release.apk
 ```
 
-(`-g`: 권한 창 없이 자동 허용)
+(`-g`: 권한 창 없이 자동 허용) · 이전 빌드는 [GitHub Releases](https://github.com/movensfh-sys/movens/releases)에 있다.
 
 ## 주요 기능
 
@@ -93,6 +107,7 @@ adb install -r -g movens-v0.2.2-debug.apk
 | 항목 | 값 |
 |---|---|
 | 대상 | Android Automotive OS — **Pleos Connect Emulator 2.1.0** (API 34) + Virtual Console |
+| 화면 규격 | 2560 × 1440, 160 dpi (Pleos Connect v2.1.0 AVD 기본값 `hw.lcd.width/height/density`) |
 | 앱 | Kotlin 2.2.21, Android View, minSdk 28 / compileSdk 34, 패키지 `ai.movens.app` |
 | SDK | Pleos `Vehicle:2.3.2`, `TextToSpeech:3.3.1`(ON_DEVICE), AAOS Car API `PERF_VEHICLE_SPEED` — 차량 속도는 Pleos SDK에 없어 공식 FAQ 안내대로 AAOS 표준 속성 사용 |
 | 빌드 | Gradle 8.14.3 wrapper, AGP 8.10.1, JDK 17 이상, Android Studio Meerkat(2024.3.2) 이상 |
@@ -121,7 +136,7 @@ adb forward tcp:18088 tcp:8088
 
 ## 실행 방법
 
-1. 에뮬레이터를 켜고 APK를 설치한다(위 `adb install`). 직접 빌드하려면 아래 "빌드".
+1. 에뮬레이터를 켜고 `apk/movens_movens_release.apk`를 설치한다(위 `adb install`). 직접 빌드하려면 아래 "빌드".
 2. movens를 실행한다. 처음 실행할 때 위치 · 마이크 · 알림 권한 창에서 모두 **허용**. 권한 창이 내비 뒤에 숨으면 몇 초 기다리거나 하단 바의 movens 아이콘을 다시 누른다.
 3. 아래 순서대로 Virtual Console이나 앱 버튼으로 상황을 만든다.
 
@@ -146,6 +161,12 @@ adb forward tcp:18088 tcp:8088
 ./gradlew :app:testDebugUnitTest
 ```
 
+```bash
+./gradlew :app:assembleRelease
+```
+
+release APK는 `app/build/outputs/apk/release/app-release.apk`에 생기고, 제출용으로 `apk/movens_movens_release.apk`에 복사해 둔다.
+
 - 저장소는 **한글이 없는 경로**(예: `C:\dev\movens`)에 둔다. 한글 경로에서는 Android 빌드가 깨진다.
 - "Please Select Gradle JVM" 창이 뜨면 **Use JVM 21** (JDK 25는 Gradle 8.14.3과 호환되지 않음).
 - Gradle Sync 중 "AGP 업그레이드" 안내는 무시한다.
@@ -167,6 +188,7 @@ adb forward tcp:18088 tcp:8088
 │  ├─ ReverseSim.kt         # (시연) 후진 주차 체험
 │  └─ VirtualConsole.kt     # (시연) 에뮬레이터 Virtual Console 연동
 ├─ app/src/test/            # 단위 테스트 22개 (PedalRule, AnomalyDetector, DriveScenario, ReverseSimModel)
+├─ apk/                     # 제출용 release APK (movens_movens_release.apk)
 ├─ demo_sounds/             # 마이크 시연용 소리 (평소 엔진 30초, 노킹 60초, 합본)
 └─ docs/img/readme/         # README 화면 (에뮬레이터 실제 실행 화면)
 ```
