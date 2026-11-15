@@ -72,7 +72,7 @@ R 또는 D 기어, 15 km/h 이하에서 **브레이크 신호 없이 2초 안에
 **[GitHub Releases (최신)](https://github.com/movensfh-sys/movens/releases/latest)** — 켜진 Pleos Connect 에뮬레이터 창에 APK를 끌어다 놓거나:
 
 ```bash
-adb install -r -g movens-v0.2.1-debug.apk
+adb install -r -g movens-v0.2.2-debug.apk
 ```
 
 (`-g`: 권한 창 없이 자동 허용)
@@ -187,18 +187,6 @@ adb forward tcp:18088 tcp:8088
 - **제동:** 앱에서 차량 제동을 직접 제어할 수 없다. 경고음과 음성 안내로 운전자가 직접 브레이크를 밟도록 유도한다.
 - **소리 판단:** 상대 데시벨은 절대 소음이 아니므로 "평소 대비 변화"만 판단한다. 임계값(15 km/h, 8 km/h, 2초, +6 dB 등)은 시뮬레이션으로 조정할 초기값이다.
 - **Virtual Console 연동:** `INTERNET` · `127.0.0.1:8088` 평문 통신은 에뮬레이터 시연 전용이다. 실차에는 이 서버가 없어 연결이 안 되면 앱 안 시뮬레이션만 한다.
-
-## 블라인드 심사용 커밋 설정
-
-블라인드 심사 규칙상 커밋 author에 실명 · 개인 메일이 들어가면 안 된다. 클론한 뒤 **이 저장소에만** 익명 identity를 설정한다 (repo-local 설정은 clone으로 따라오지 않는다).
-
-```bash
-git config user.name "movens"
-```
-
-```bash
-git config user.email "movens@users.noreply.github.com"
-```
 
 ## 라이선스
 
