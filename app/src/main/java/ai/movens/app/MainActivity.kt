@@ -55,7 +55,7 @@ import kotlin.math.abs
 import kotlin.math.max
 
 /**
- * movens 메인 화면. 시동과 함께 자동으로 동작하며 설정 화면은 없다.
+ * movens 메인 화면. 한 번 실행해 두면 별도 설정 없이 동작한다.
  *  센서(Vehicle SDK, Car API, 마이크) → 상황 판단 → 기능 엔진(AnomalyDetector, PedalRule/후진 시뮬레이터, 경고등 안내)
  *  → 출력(음성·경고음, 큰 글씨 화면, 휴대폰식 알림, 정비 카드·급발진 경험 기록)
  *
@@ -695,7 +695,7 @@ class MainActivity : Activity() {
     private lateinit var suaList: LinearLayout
 
     private val resetAlert = Runnable {
-        showAlert(Level.OK, "정상 감시 중", "시동과 함께 자동으로 기록합니다. 주행 중에는 화면을 보지 않아도 됩니다.")
+        showAlert(Level.OK, "정상 감시 중", "앱을 켜 두면 자동으로 기록합니다. 주행 중에는 화면을 보지 않아도 됩니다.")
     }
 
     private fun buildUi() {
